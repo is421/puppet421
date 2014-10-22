@@ -1,6 +1,6 @@
 rvm: 1.9.3
 notifications:
-	email:
-	- <harirao3@gmail.com>
+ email:
+ - <harirao3@gmail.com>
 env:
-	- PUPPET_VERSION=3.4.3
+ - PUPPET_VERSION=3.4.3
