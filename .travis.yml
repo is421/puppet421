@@ -1,0 +1,6 @@
+rvm: 1.8.7
+notifications:
+	email:
+	- <harirao3@gmail.com>
+env:
+	- PUPPET_VERSION=3.4.3
