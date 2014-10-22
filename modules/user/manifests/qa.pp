@@ -1,8 +1,5 @@
 class user::qa{
-	realize(User['jOrtega'])
-	realize(User['keroles'])
-	realize(User['shayyan'])
-	realize(User['ubuntu'])
-	realize(User['khaled'])
-	realize(User['sBirkner'])
+	search User::Virtual
+	realize(User['jOrtega','keroles','shayyan','khaled','ubuntu','sBirkner'])
+	realize(Ssh_user['jOrtega','keroles','shayyan','khaled','ubuntu','sBirkner'])
 }

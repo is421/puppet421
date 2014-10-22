@@ -1,32 +1,37 @@
 class user::virtual {
-    @user { 'sBirkner':
-		ensure => present,
-		home => '/home/sBirkner',
-		managehome => true,
-	}
-    @user { 'shayyan': 
-		ensure => present,
-		home => '/home/shayyan',
-		managehome => true,
-	 }
-    @user { 'keroles':
-		ensure => present,
-		home => '/home/keroles',
-		managehome => true,
-	 }
-    @user { 'khaled': 
-		ensure => present,
-		home => '/home/khaled',
-		managehome => true, 
+	define ssh_user($key){
+		user { $name:
+			ensure => present,
+			managehome => true,
+		}
+		file { "/home/${name}/.ssh":
+			ensure => directory,
+			mode => '0700',
+			owner => $name,
+		}
+		ssh_authorized_key { "${name}_key":
+			key => $key,
+			type => 'ssh-rsa',
+			user => $name,
+			require => File["/home/${name}/.ssh"],
+		}
 	}	
-    @user { 'jOrtega': 
-		ensure => present, 
-		home => '/home/jOrtega',
-		managehome => true,
+	@ssh_user { 'shayyan':
+	key => 'MIICXgIBAAKBgQCvwuh6Cy74UPC8TunTUTwKWMdKTQLhjHHUH3D9oeTWRAV84y/6OludDUn2m4oo4c1fcW0KvEnFDMSZSvTuBqDWvnkAnqC9yph9oUbyCjUJ+hMmpjdoXl5+JBRQ9ppApHuFvazWDv/Zum4L8yPpZ5Y21YBOcHLLdARcKGoQKNOutwIDAQABAoGBAJitBcbmKhH4NXZOUl2HJlGSluNbDFKi7komWb9ov2DEy8OVkhqaUPSXE5XNvPEQXJc471CxCJ/MHIdQjnypc1JGrES4/ub2UsUjq6CHux6DzIJqMUGYofZGasQmC4EpnfWkgELxkCNJnL/JNS4HKpDURvtXdRfgf976vyr+NMnBAkEA1qDD4bBISKJj1xlbx9CeMFDd2GA/9VT6JrfSbJMGpxzCEMuwEpc/7gYLb58q590DTD1sBcULWJ180e0RiCzKVwJBANGkMZSJdr0gl/yevDqdRNP1JszlyXggQs5zQA1VLHMAjyHdbEpJ8ARtdr/DQOV76Ng0NocmkwBM81ZDQ/iyQqECQQCyKJcRA6Ss7meUCM+/6LM3Bhlw4EyXGGfhtdstF0qBc4TALmREulpt+YSKroQOHc77/Uxq6arGb0xKcdCIyi1XAkBtCP8YiF6Pg3JJW63+tmlj7G+fxiwBJJZalirMRG536eSH8oguI0KIqv5GQqFwOgAi4xUxOejfESbGyPmDUgPBAkEA1T8yxnRq4jdEB4xDiH9nZGTFOCgTNDHNkL+xyw6CPsdYKicS5XAKLlpQtf8SK1Lqxi90QpUTsM021XE+qpGyVg=='
 	}
-    @user { 'ubuntu': 
-		ensure => present,
-		home => '/home/ubuntu',
- 		managehome => true,
+	@ssh_user { 'keroles':
+	key => 'MIICXwIBAAKBgQC1zjQVmbCz4qo5BlKx2eCh9zyZnNsFB/ghiQe4whXFVzHALd+foMOZAfoA8bhegCIteI/drwtDczxYcFEzvGaczF2PAPKs2sltV7M2lGOU9j6SXV7pQGWdfDpvcSNTzHpRWXcHOpr+0vYWFIWbI9mk+jrqRF/hNLuMPaBV7v1uEQIDAQABAoGBAJZ2B0jxHvpg1nvHLd0e8fdZQ//lfqWVSNeILqnLhnUBipz/2hij1fzlU+BALFOZO6/iHT5cRbgWwJR4r9tfSpOHsSXbGIiar3OqmbVJRQkF0xupM2xYj8o8RJIrcnCMKpmk9soumsB2ZXSl/5dHVKAj3k0oQ5qXXGP5ZkD/+e8hAkEA6P2hh+Px4ZzKVBlySw3dmKk2BgZZdkfw6uOdlmOeNAtkx2ZPI7boVfrYUlv4PB2ezvdcrh55muDUC6A+nssuJQJBAMfCh34kz8hSnwVP7balptnlhGI5mdynuoAu3j1RMl5t5WONkMQIY3lzh1XeBFRvYl2uH9rq5MTqGadRbFPkbn0CQQDoBSwHF4iZFHqopW6cL4KttFSIS2prz9irEWCtkybIzU/fApNtDYjxlow1+ECMHTM5CDzTaKXRBnQj38B8gfnBAkEAnTGjVcy6BbWelZuUQIqShh1q07DoNw92X7CCClZ/AHgSbwjTxq+jN8uF0Dhpx9fu3DFNuAPoClz92wDj8hBsMQJBAMeLlOnfXRckKziL8W65I+HpM+Y46sowHw2RHeuhA/cR5i6g1vvSvm8G7YC5WaroyXTuzHCclk0rrPC/CqARQJ0='
+	}
+	@ssh_user { 'jOrtega':
+	key => 'MIICXgIBAAKBgQCvqX8HG1Y8KuJKoM1/dLD4cY72REltiHkX00DYN3A+Pj8LxvZHWQLEpxShQkAIZAEsJAC04wDG1PdepqS6QpPSRSgpWaLa9nxWXqZERRKcj5EveT7aFuJxsFy461YXtyyr8Vs7hOtfjAfp3U+cZKlMTWdVdShp7Bp8+iRqLPltkQIDAQABAoGBAJVNBLBvpa3h7Q/s+Hx6G+gt7IqXo6k7M2Dypsye4gGlOkSySKR/nQCz2a7t9iqrhOuVdhxITGKyo8WI8b111NicgFemLhUWIGrnaac9LDkeNfmqxW029UiTrJVknwHglT6z5Weaf7BoG9FXSvmKyyEyCyDcNPlAPnoyQDSPkHgBAkEA1Ce9x3wjjyQuZb/r3JS2vFemIXotjcWRUEG0moZPDN65Sd6ZART9uIXbjMiAa36ZWvY/x2UYV/ADI4dBcbXmQQJBANP3DZeC4ruUfHa7iUlFEqkaYIAYwqYz1JiqlmBmKK8y04Q3sI0f1q6e1CTY1rIs+CyPT/BzNKfm4waOa8Sk01ECQCdjBWmuk0900SRUwC4gcdh/kTkv3Jswbazvtd7mRnDGPLIJIHDB++Sw/TSi2KycQU5Q30BedWmGBp8m8jBxK8ECQQCU9G15xsHc/jkFGz8b3U2CxoWAH2ZSc+P3sRFiBwiaLgaUSKpqUjCEoBsHFdayeYWhksijeeJMB6YMynMTSp0xAkEArUgAxDYZ4lCyYLtNJqBZQLo4ddNsIlbf2MGst6W74IgzIScIeI6Cwz3cFGwq0Gc4Hizf6fj2NbyX4/z14iz6WQ=='
+	}
+	@ssh_user { 'khaled':
+	key => 'MIICXAIBAAKBgQDphybxJ82y6XtG3tlm9DpLkTqKwGVQCMp1txMr5YiMSAhDJ+ylnJ7op3emZhVIAOggUfnVM6XmR4HEHpoflVg5EuT0pPYtVaVcKHhmyYkFJphua9G8eOXq76mJHpnYtVXXcTa4w0ayT34mF45+xMLPa6Q+LSr/IUof2dXhBazjUwIDAQABAoGBANk3/eETRSLGSwUBBPfe9NqVm/60N4japHgacprCRuE1n3nYCSeDJ80A+Squid0P+tsVZW4LPKWWnf3u+S2nnQayXu2XUG0x0P8cKB/YfhsQbSfjPKOzvDkPJD34TYaX62Fx0vZTwGoQJRTk5vB5fY5d/DD0Pd113g3hhEvNWq8BAkEA/3MdQ9IJqa9lykESdehO6y8c/OMxVfRSkd8zFSSx4Z5GZqoPHPZFsKeZj3evNYwyd2MdHH3tI1DyByV6t2Q+hwJBAOoH8pDbBBUOWVpsSw04NsaZDnEQHDObiUSJpIf/ki0kCqt0cII0NodkTVRee0yifWSN7wFts5J8Uj4eibV2e9UCQHUz5sh4NPDCxewvQP4SESt82Ur6Hme2iq/c/X4E8Qx4Zwqxme+K2ty7eQxHOH9UDM+UDQZGjKf4eqNmwdAk0T8CQEszgJNhfT9S3A19TOSTkq5gUk6scZN3wDUg0ZjN2+fbc/5CLUD5jCgXZ+3bal1mvUpJfWqFGLXScw74+yEvUH0CQFzQsJ0UoSaind8HAw+NuxqUrAAr/eizOERFoQn6cfuP/BXZTxJlzCSou7oDtugLDX5DkHhgR8A0dN2vd40GSjY='
+	}
+	@ssh_user {'sBirkner':
+	key => 'MIICXQIBAAKBgQCrEipdjpWF101FU3vOqjHvZnpIF0NBQz1AeTEne33TvzluwW/BlFpf00u6fsNHnK5CSUeoWZQN1nPsvXmf7EeNtuwIrr4W07u1pPebqPACrrMQNTnFz5ddRw+rL7hrEn/T6Ufi9nqSsAwxML7d+KucZ+mSXrEOWaMwRrDkPvEMVQIDAQABAoGAB7FKbGiT+q/CzsJBR/rJQg2mpAU/xfiDEZohhrf74YCw0XUrVFYadkKnHhzDJT47a8mlykE08iZZkiS3CmTylq73wlhX+Mn3qggUrQmsocbVEWyjVSbdpctHV9qw9pfVo/X063+ffUF9CBh2Jkv25cZz8rmxrYUinLCuh6XGYmECQQDTEc7yNa+cu8zA7ICBtjO4I4GUyfMfbLBaQ92KUwSZxZjtPxGHiUyx663EN+O6qXUPwOg/07meNO9d7g3joJA9AkEAz3ykOkpH8phc9/YpG8m1pOsX/ZSWH7j+rJa3JO8l8jxKInDCceWkxIIwbBJVtE5FzfnTwuxXLkI6BWiNiOrV+QJBAJ5pmDtbJbFpldQZ7JztxcVnCKNGKq2kInuswcJGaoaKsislkZ964dALRYCmPcnj0xL+wpDc9EwUCK8jstLruDUCQQC2+4BGG95Jt08+KuxkIka8c8yLiS/AOED5ak2IGBRKBhuHNhR1qAXge8RCewT0Z5cuKOY1YIMeO6+5t1Qi7J/ZAkBEkC7khdkBPt3Ob5DG+1lEull6zkO9ee1qOS/xkO2RalM0auMFtINc/uZDZAi91LRE5A9gYZ9V+GJR84jP4NiZ'
+	}
+	@ssh_user { 'ubuntu':
+	key => 'MIICWwIBAAKBgQDOjy7tJnpeJVZRAuat9aDM+Lk+Bi6Zxf77AS41VRRnMoxVxJbJ8IGf5c0rxrWgffoZgcfUyjctuS7iD/0cMQ1trAEdgpDTYiAgsfkcdwJ7xkN9Io6GTrrx2v3G9CQX6hJ8otmqMvZDYIcZdSItryDJmwqSDJOhBmCVNOwV98BpNQIDAQABAoGAI+1lpRwHNq7Z15dglitd/6jXV4Ftw5NbqT7oUaBtvxFctWJPM+qgMTagPBgA6VxgDuWy40EU3eAS1oEfbjLd+cAqAYlDS/Wkb0MCQOpRmYg10EWoHVzC8zHvISNbxsCe5X2wtw8j6b9MZN3s/tJTYHI4vU/K4/QtINFKkfZUqAECQQD5aaMYCj+22+/mCogY7gBaoazfc86bwWxh4kgbr9Gn6c6XW/qonY9d+IuYS0yQqJbXUBix0G/I8Vx5MN8KDnM1AkEA1APM5hJOYxl/+VSnQ64fE7No6/sNHC8Vvx/fighLGbhAhqWIMnIyFccfVs/9izUNvXsblHmrkVvLpRW3DeLeAQJABR5e44JqVlVjMgRrUJ+p0DJbOubEibvJfqTHOBI+qkSJIeAYX9eD9rjAHKsG8j0Tg224ZAXUFXqmnDIdkbZENQJALTaCQ64zuT5+5BUBdpVzWygvf+OR8Ci6Yn/RlAYgveNlH1G9scRYmfxU2paQY1d1DqtqPkeUJvOEgjgXSYbQAQJAJj/X9hdOh5BXgUJhXaPANXnNnpd3jCQqsFHbzUB4nAuP1zZJWLcqBUcIrucG7K0apJENQYeYkOEGyv5dPPKdPw=='
 	}
 }
