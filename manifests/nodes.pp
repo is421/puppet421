@@ -1,4 +1,5 @@
 node 'puppet' {
+	include puppetapp
 	include user::virtual
 	include user::sysadmins
 	include user::developers
@@ -8,9 +9,4 @@ node 'puppet' {
 	package { ['puppet','htop','unzip']:
 		ensure => present,
 	}	
-	exec { 'sudo apt-get install npm' :
-		cwd => '/home/sBirkner/',
-		user => 'sBirkner',
-		path => ['/usr/bin']
-	}
 }
