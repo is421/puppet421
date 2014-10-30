@@ -1,4 +1,3 @@
-include mongodb
 include puppetapp
 include user::virtual
 include user::sysadmins

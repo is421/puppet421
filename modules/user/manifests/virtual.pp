@@ -15,6 +15,11 @@ class user::virtual {
 			user => $name,
 			require => File["/home/${name}/.ssh"],
 		}
+		mongodb::db { $name:
+			user          => $name,
+			password => $name,
+			roles => ['readWrite'],
+		}
 	}	
 	@ssh_user { 'shayyan':
 	key => 'MIICXAIBAAKBgQDpXaKt82CXWbomF8ZODSajV2rxLah6/ZyMB+rXocaqApX7UO8/zb+lMHjhSLCQ2YszWpbQ6XP+wQMZ7YMJajXpCIA5LpsYcvPjLKbw5/wBnlfaUfHJ7eOl023WbctJ5rrfugClJxSX+aF3j+KwU8YZ7rJvOzwhS4mqhp+JBg263QIDAQABAoGALJltlssVobdPQSp4BsCyqrLxSEiOk3rWqVh2BGHxoto9qbstDkeXIc3ivEN1IynAVb8xZZnIRl7C5fije3Al/xbom5LrNt/GZJEr5alfIdtJnb+cztNQZJq2z2MUjXKQvGPkkBXA4uZsIM4s/pqjnBMpactfravbjk+QJx8ENw0CQQD1gkQ7Ld7jENz3HX2Zeq8Q0zwPjaVdLoXIxbEOxvGM0NImA2JwD+gLkPyN153Wlzq3iKPKyR8aP1hrzRPIX/n/AkEA81aHtqUhTRDcugOJZVcCQmUEwcGkkq+GyXKSrov9IQdIKgiqhMzLFlQwzsk4zKViQV9ywh1D+aFD6udAQl9zIwJAJhRHavppaMSz0Sxkz8pknvJ0jWEF9hcCLyrilI0s6A93mOfLe+AruKeLVKDN3XvlYpQx+4EIbvTGTSoo2FpylwJBAMJg6bH1gH9uK9OPRa6k7VIaHc2koJDoE5RRqGgzvPUoOvYQzB2e9c+VWxOj23Jl3fH4i9QRyp3au0Umisc6Nd8CQFLNg5V7FyJVGqZmuHpz/K31CS4bpO32eg2WyvWwBqOSkYMA01+kMzcMEqjs/I2lz6iCOHAfCKXcVhrFnL8rg0Y='
